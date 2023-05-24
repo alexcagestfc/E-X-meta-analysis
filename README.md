@@ -10,8 +10,8 @@ Section 1 script 1- identifyexperiments()
 
 Section 3 script 1- readexperiment(wkspce,exprimentaldict)
   script requres a file to save information to. This can be made by saving an empty notepad doccument and copying its file path with name to 2nd and 5th line in script (lines 292 and 295 in current version)
-
+  note: change the file from ".txt" to ".csv" when entering file path
 
 analysiscript when ran will call upon EXMAB to identify appropriate experiments, load experimental data, access loaded data, and analyse trends 
 
-ranged analysis will assess performance for a predetermined range of energy levels
+ranged analysis will assess performance for a predetermined range of energy levels, also using EXMAB
