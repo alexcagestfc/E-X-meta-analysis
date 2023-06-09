@@ -51,7 +51,7 @@ to load only useable experiments, VNbDf2= VNbDf.loc[VNbDf['use']==True]
 """
 
 spaces=0
-detector=2402
+detector=2401
 VNbDf= VNbDf.loc[VNbDf['use']==True] #remove those that don't meet criteria
 spaces=loadN(VNbDf,spaces,detector,detector) # loads data as workspace
 
@@ -82,12 +82,12 @@ integrates all spectra, notes their dates so they can be plottted wrt time
 points=401
 days, arealist = SelectiveFullAll(points,experimentallist,VNbDf)
 
-Days_2,rangedsums=RangeLimit(days,arealist,0*10**3,1*10**12)
+Days_2,rangedsums=RangeLimit(days,arealist,0*10**3,1*10**12)#remove anomalously large or small results
 
 
 EnginXBDay='01-JUN-2003'
 Day1=dayssince_1_1_2000(EnginXBDay)
-Days_2 = list(np.asarray(Days_2) - Day1)
+Days_2 = list(np.asarray(Days_2) - Day1)# reformat date interms of time since Engin-X debut
 
 """
 plotting Integral against T (days)
@@ -155,13 +155,14 @@ S3Z = InfoFrame2['Charge'].to_numpy()
 S3X = InfoFrame2['Days'].to_numpy()
 
 
-rslt_df = InfoFrame2[InfoFrame2['Days'] > 1900]
+rslt_df = InfoFrame2[InfoFrame2['Days'] > 2100]
 
 
 S3Y = rslt_df['I/C'].to_numpy()
 S3Z = rslt_df['Charge'].to_numpy()
 S2X = rslt_df['Days'].to_numpy()
 S3X=d2y(S2X)
+
 
 """
 3D plotting:
@@ -207,10 +208,10 @@ ax.scatter3D(*datalist.T)
 ax.plot3D(*linepts.T)
 
 
-ax.set_xlabel('time (days)')
+ax.set_xlabel('time (years)')
 ax.set_ylabel('Integral per unit charge')
 ax.set_zlabel('Charge')
-
+ax.set_title('1srtprincipal compent')
 
 covarxy=np.cov(S3X,S3Y)
 covaryz=np.cov(S3Y,S3Z)
@@ -248,7 +249,6 @@ print('relative standard deviation in integral/charge '+str(round(YRSpc))+'%')
 #print('relative standard deviation in charge '+str(round(ZRSpc))+'%')
 
 
-ax.set_title('1st principle compent')
 
 
 xycor=np.corrcoef(S3X,S3Y)
@@ -291,10 +291,12 @@ graph proportially
 it doesn't change anythig but the data is more intuitive this way
 """
 S2X = rslt_df['Days'].to_numpy()
-S3X=d2y(S2X)
+S3X2=d2y(S2X)
 
 Ydata2 = Proportionise(S3Y,S3X2)
 Ydata2=Ydata2*100
+
+S3X2,Ydata2=RangeLimit(S3X2,Ydata2,50,150)
 plt.figure()
 
 plt.scatter(S3X2,Ydata2)
@@ -303,11 +305,11 @@ m, c = np.polyfit(S3X2, Ydata2, 1)
 
 S3Yfit = vars_simplefit(S3X2,Ydata2)
 plt.plot(S3X2,S3Yfit,'r')
-m=round(m, 7)
+m=round(m,1)
 c=round(c)
 plt.xlabel('Year')
-plt.ylabel(' monitor count per unit charge (as percentage of earliest)')
-plt.title('2402: Neutrons pern AHr vs date'+',fit: y='+str(m)+'x +'+str(c))
+plt.ylabel('monitor count per pulse (as percentage of earliest)')
+plt.title('Neutrons per pulse vs date'+', gradient: '+str(m)+' percent per year')
 
 """
 """
