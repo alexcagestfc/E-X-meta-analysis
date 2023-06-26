@@ -1,3 +1,25 @@
+"""
+This program will use scripts from EnginXMetaAnalysisBlocks  for the purpose of beamline performance analysis
+
+the results output will be six plots as well as statistical info which will be printed
+statistical info will include covarance info, correlation info and standard deviations
+
+of the plots, the sixth plot will present data that has been manipulated for the purpose of legibility
+
+plot explanations:
+figure 1: un edited counts vs number of days since debut of instrument
+figure 2: 3D plot of counts vs number of days vs associated charge
+
+figure 3: 3D plot of counts/charge vs number of days vs charge
+(atempt to control for the relation between counts and charge)
+
+figure 4: same as figure 3, now with line of best fit as made by principal component analysis
+figure 5: counts/chage vs time since debut with line of best fitting_algorithm
+
+figure 6: numbers edited for legibility counts per unit charge over years
+"""
+
+
 from mantid.simpleapi import *
 import matplotlib.pyplot as plt
 import numpy as np
